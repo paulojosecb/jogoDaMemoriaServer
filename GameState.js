@@ -10,7 +10,7 @@ const Countdown = {
 module.exports = class GameState {
 
     constructor(delegate) {
-        this.numberOfPairs = 2
+        this.numberOfPairs = 5
         this.startCounter = Countdown.startCountdown
         this.turnCounter = Countdown.turnCoutdown
 
@@ -33,14 +33,18 @@ module.exports = class GameState {
         switch (command.type) {
             case CommandType.begin:
                 this.begin()
+                break
             case CommandType.playerHasFlipped:
                 break
             case CommandType.restart:
                 this.restart()
+                break
             case CommandType.scored:
                 this.playerHasScored(command.player)
+                break
             case CommandType.wrongCard:
                 this.playerHasChosenWrongCards()
+                break
             default:
                 break
         }
@@ -53,13 +57,14 @@ module.exports = class GameState {
     }
 
     playerHasScored = (player) => {
-        console.log("Player Has Scored")
         switch (player) {
             case Player.playerOne:
                 this.playerOnePoints++
+                console.log("Player One Has Scored: " + this.playerOnePoints)
                 break
             case Player.playerTwo:
                 this.playerTwoPoints++
+                console.log("Player Two Has Scored: " + this.playerTwoPoints)
                 break
         }
 
