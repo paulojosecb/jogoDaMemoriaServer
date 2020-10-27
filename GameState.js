@@ -62,14 +62,18 @@ module.exports = class GameState {
             case Player.playerOne:
                 this.playerOnePoints++
                 console.log("Player One Has Scored: " + this.playerOnePoints)
+
+                this.delegate.didScored(this.playerOnePoints, player)
                 break
             case Player.playerTwo:
                 this.playerTwoPoints++
                 console.log("Player Two Has Scored: " + this.playerTwoPoints)
+
+                this.delegate.didScored(this.playerTwoPoints, player)
                 break
         }
 
-        this.delegate.didScored(player)
+
         this.checkEndGame()
     }
 
