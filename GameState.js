@@ -10,7 +10,7 @@ const Countdown = {
 module.exports = class GameState {
 
     constructor(delegate) {
-        this.numberOfPairs = 5
+        this.numberOfPairs = 6
         this.startCounter = Countdown.startCountdown
         this.turnCounter = Countdown.turnCoutdown
 
@@ -29,12 +29,13 @@ module.exports = class GameState {
     }
 
     processCommand = (command) => {
-        console.log(command)
         switch (command.type) {
             case CommandType.begin:
                 this.begin()
                 break
             case CommandType.playerHasFlipped:
+                console.log(command.stringfy())
+                this.delegate.didFlippedCard(command.value, command.player)
                 break
             case CommandType.restart:
                 this.restart()
@@ -43,7 +44,7 @@ module.exports = class GameState {
                 this.playerHasScored(command.player)
                 break
             case CommandType.wrongCard:
-                this.playerHasChosenWrongCards()
+                this.playerHasChosenWrongCards(command.value, command.player)
                 break
             default:
                 break
@@ -72,8 +73,9 @@ module.exports = class GameState {
         this.checkEndGame()
     }
 
-    playerHasChosenWrongCards = () => {
+    playerHasChosenWrongCards = (cards, player) => {
         console.log("playerHasChosenWrongCards")
+        this.delegate.didPlayerHasChosenWrongCards(cards, player)
         this.endTurn()
     }
 
@@ -102,7 +104,6 @@ module.exports = class GameState {
     }
 
     startClock = (countdown) => {
-        console.log("Clock started for: " + countdown)
         this.currentCountdown = countdown
         this.resetCounters()
 
@@ -118,7 +119,6 @@ module.exports = class GameState {
             case Countdown.startCountdown:
                 this.startCounter--
 
-                console.log("Clock ticked for start: " + this.startCounter)
                 this.delegate.clockTicked(this.startCounter, this.currentCountdown)
 
                 if (this.startCounter == 0) {
@@ -129,7 +129,6 @@ module.exports = class GameState {
             case Countdown.turnCoutdown:
                 this.turnCounter--
 
-                console.log("Clock ticked for turn: " + this.turnCounter)
                 this.delegate.clockTicked(this.turnCounter, this.currentCountdown)
 
                 if (this.turnCounter == 0) {

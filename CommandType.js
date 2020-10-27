@@ -1,4 +1,6 @@
 module.exports = {
+    connection: "connection",
+    disconnection: "disconnection",
     begin: "begin",
     scored : "scored",
     wrongCard : "wrondCard",
