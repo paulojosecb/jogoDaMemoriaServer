@@ -5,6 +5,8 @@ const GameState = require('./GameState')
 
 const Command = require('./Command')
 const CommandType = require('./CommandType')
+const Player = require("./Player")
+const { scryptSync } = require("crypto")
 
 const Commands = {
     connection: "connection"
@@ -14,19 +16,22 @@ var currentConnections = 0
 
 var sc
 
+let gameStateDelegate = new GameStateDelegate()
+let gameState = new GameState(gameStateDelegate)
+
 const server = net.createServer((socket) => {
 
-    sc = socket
-
-    let gameStateDelegate = new GameStateDelegate(server, socket)
-    let gameState = new GameState(gameStateDelegate)
+    gameStateDelegate.sockets.add(socket)
 
     socket.on("end", () => {
         console.log("Alguem se desconectou")
+        let command = new Command(CommandType.disconnection, "", currentConnections == 2 ? Player.playerTwo : Player.playerTwo)
+        socket.write(command.stringfy())
+
+        gameStateDelegate.sockets.delete(socket)
     })
 
     socket.on("data", d => {
-        console.log("Chegando data")
         const data = d.toString()
         console.log(data)
 
@@ -38,7 +43,8 @@ const server = net.createServer((socket) => {
 
 server.on("connection", (socket) => {
     console.log("Alguem se conectou")
-    sc.write(`command: ${Commands.connection}?value: ${currentConnections}`)
+    let command = new Command(CommandType.connection, "",currentConnections == 0 ? Player.playerOne : Player.playerTwo)
+    socket.write(command.stringfy())
     currentConnections++
 })
 

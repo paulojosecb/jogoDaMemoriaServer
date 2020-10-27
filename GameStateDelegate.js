@@ -4,9 +4,8 @@ const Player = require('./Player')
 
 module.exports = class GameStateDelegate {
 
-    constructor(server, socket) {
-        this.server = server
-        this.socket = socket
+    constructor() {
+        this.sockets = new Set()
     }
 
     didRestartGame = () => {
@@ -25,7 +24,17 @@ module.exports = class GameStateDelegate {
     }
 
     didScored = (player) => {
-        let command = new Command(CommandType.playerHasScored, player)
+        let command = new Command(CommandType.playerHasScored, "", player)
+        this.sendCommand(command)
+    }
+    
+    didFlippedCard = (card, player) => {
+        let command = new Command(CommandType.playerHasFlipped, `${card}`, player)
+        this.sendCommand(command)
+    }
+
+    didPlayerHasChosenWrongCards = (cards, player) => {
+        let command = new Command(CommandType.wrongCard, `${cards}`, player)
         this.sendCommand(command)
     }
 
@@ -40,8 +49,9 @@ module.exports = class GameStateDelegate {
     }
 
     sendCommand = (command) => {
-        console.log(command.stringfy())
-        this.socket.write(command.stringfy())
+        for (let socket of this.sockets) {
+            socket.write(command.stringfy())
+        }
     }
 
     clockTicked = (counter, countdownType) => {
