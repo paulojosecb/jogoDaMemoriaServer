@@ -10,5 +10,4 @@ module.exports = {
     endGame : "endGame",
     switchTurn : "switchTurn",
     playerHasFlipped : "playerHasFlipped",
-    playerHasScored: "playerHasScored"
 }

@@ -23,8 +23,8 @@ module.exports = class GameStateDelegate {
         this.sendCommand(command)
     }
 
-    didScored = (player) => {
-        let command = new Command(CommandType.playerHasScored, "", player)
+    didScored = (points, player) => {
+        let command = new Command(CommandType.scored, `${points}`, player)
         this.sendCommand(command)
     }
     
