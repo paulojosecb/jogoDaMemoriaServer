@@ -19,8 +19,10 @@ var sc
 let gameStateDelegate = new GameStateDelegate()
 let gameState = new GameState(gameStateDelegate)
 
+// Cria conexão TCP
 const server = net.createServer((socket) => {
 
+    //Adiciona socket ao array de conexoes
     gameStateDelegate.sockets.add(socket)
 
     socket.on("end", () => {
@@ -52,6 +54,7 @@ server.listen(4000, () => {
     console.log("Server listening on port" + 4000)
 })
 
+// Transforma os dados que estão chegando em Comandos
 let parseIncomeDataIntoCommand = (data) => {
     let bitsOfData = data.split("?")
 

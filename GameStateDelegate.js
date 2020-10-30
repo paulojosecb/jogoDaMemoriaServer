@@ -2,6 +2,7 @@ const Command = require("./Utils/Command")
 const CommandType = require('./Utils/Enums/CommandType')
 const Player = require('./Utils/Enums/Player')
 
+// Esta classe transforma os comandos que chegam do GameState em string e envia para todas as conexões
 module.exports = class GameStateDelegate {
 
     constructor() {
@@ -48,6 +49,7 @@ module.exports = class GameStateDelegate {
         this.sendCommand(command)
     }
 
+    // Envia os comandos para todas as conexões de socket 
     sendCommand = (command) => {
         for (let socket of this.sockets) {
             socket.write(command.stringfy())
