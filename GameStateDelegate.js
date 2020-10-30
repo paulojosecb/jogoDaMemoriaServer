@@ -1,6 +1,6 @@
-const Command = require("./Command")
-const CommandType = require('./CommandType')
-const Player = require('./Player')
+const Command = require("./Utils/Command")
+const CommandType = require('./Utils/Enums/CommandType')
+const Player = require('./Utils/Enums/Player')
 
 module.exports = class GameStateDelegate {
 

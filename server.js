@@ -3,9 +3,9 @@ const net = require("net")
 const GameStateDelegate = require('./GameStateDelegate')
 const GameState = require('./GameState')
 
-const Command = require('./Command')
-const CommandType = require('./CommandType')
-const Player = require("./Player")
+const Command = require('./Utils/Command')
+const CommandType = require('./Utils/Enums/CommandType')
+const Player = require("./Utils/Enums/Player")
 const { scryptSync } = require("crypto")
 
 const Commands = {

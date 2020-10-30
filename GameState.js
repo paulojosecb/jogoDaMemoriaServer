@@ -1,6 +1,6 @@
-const Player = require('./Player')
+const Player = require('./Utils/Enums/Player')
 
-const CommandType = require('./CommandType')
+const CommandType = require('./Utils/Enums/CommandType')
 
 const Countdown = {
     startCountdown: 3,
